@@ -2,7 +2,7 @@
 import math
 import operator as op
 
-from mapping import *
+from .mapping import *
 
 Symbol = str              # A Scheme Symbol is implemented as a Python str
 Number = (int, float)     # A Scheme Number is implemented as a Python int or float
@@ -13,7 +13,7 @@ Env    = dict             # A Scheme environment (defined below) is a mapping of
 
 def tokenize(chars: str) -> list:
     "Convert a string of characters into a list of tokens"
-    return chars.replace(EXP_OPEN, ' %s ' % EXP_OPEN).replace(EXP_CLOSE, ' %s ' % EXP_CLOSE).split()
+    return chars.replace(EXP_OPEN.m, ' %s ' % EXP_OPEN.m).replace(EXP_CLOSE.m, ' %s ' % EXP_CLOSE.m).split()
 
 def parse(program: str) -> Exp:
     "Read a Schemoji expression from a string."
@@ -24,14 +24,14 @@ def read_from_tokens(tokens: list) -> Exp:
     if len(tokens) == 0:
         raise SyntaxError('unexpected EOF')
     token = tokens.pop(0)
-    if token == EXP_OPEN:
+    if token == EXP_OPEN.m:
         L = []
-        while tokens[0] != EXP_CLOSE:
+        while tokens[0] != EXP_CLOSE.m:
             L.append(read_from_tokens(tokens))
         tokens.pop(0) # pop off EXP_CLOSE
         return L
-    elif token == EXP_CLOSE:
-        raise SyntaxError('unexpected %s' % EXP_CLOSE)
+    elif token == EXP_CLOSE.m:
+        raise SyntaxError('unexpected %s' % EXP_CLOSE.m)
     else:
         return atom(token)
 
@@ -50,13 +50,20 @@ def standard_env() -> Env:
     env = Env()
     env.update(vars(math)) # sin, cos, sqrt, pi, ...
     env.update({
-        OP_ADD:op.add, OP_SUB:op.sub, OP_MUL:op.mul, OP_DIV:op.truediv, 
-        OP_GT:op.gt, OP_LT:op.lt, OP_GE:op.ge, OP_LE:op.le, OP_EQ:op.eq, 
-        SC_ABS:     abs,
+        OP_ADD.m:op.add,
+        OP_SUB.m:op.sub,
+        OP_MUL.m:op.mul,
+        OP_DIV.m:op.truediv, 
+        OP_GT.m:op.gt,
+        OP_LT.m:op.lt,
+        OP_GE.m:op.ge,
+        OP_LE.m:op.le,
+        OP_EQ.m:op.eq, 
+        SC_ABS.m:     abs,
         'append':  op.add,  
         'apply':   lambda proc, args: proc(*args),
-        SC_BEGIN:   lambda *x: x[-1],
-        SC_CAR:     lambda x: x[0],
+        SC_BEGIN.m:   lambda *x: x[-1],
+        SC_CAR.m:     lambda x: x[0],
         'cdr':     lambda x: x[1:], 
         'cons':    lambda x,y: [x] + y,
         'eq?':     op.is_, 
@@ -65,13 +72,13 @@ def standard_env() -> Env:
         'length':  len, 
         'list':    lambda *x: List(x), 
         'list?':   lambda x: isinstance(x, List), 
-        SC_MAP:     map,
+        SC_MAP.m:     map,
         'max':     max,
         'min':     min,
-        SC_NOT:     op.not_,
-        SC_NULLQ:   lambda x: x == [], 
+        SC_NOT.m:     op.not_,
+        SC_NULLQ.m:   lambda x: x == [], 
         'number?': lambda x: isinstance(x, Number),  
-		SC_PRINT:   print,
+		SC_PRINT.m:   print,
         'procedure?': callable,
         'round':   round,
         'symbol?': lambda x: isinstance(x, Symbol),
