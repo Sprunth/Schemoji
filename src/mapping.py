@@ -25,14 +25,16 @@ OP_EQ  = SchemojiMapping('⚖️', '=')
 SC_ABS      = SchemojiMapping('🆎', 'abs')
 SC_BEGIN    = SchemojiMapping('👌', 'begin')
 SC_CAR      = SchemojiMapping('🚗', 'car')
+SC_DEFINE   = SchemojiMapping('✏️', 'define')
 SC_MAP      = SchemojiMapping('🗺️', 'map')
 SC_NOT      = SchemojiMapping('❗', 'not')
 SC_NULLQ    = SchemojiMapping('❓', 'null?')
 SC_PRINT    = SchemojiMapping('🅿️', 'print')
+SC_PI       = SchemojiMapping('🥧', 'pi')
 
 
 master_token_set = {
     EXP_OPEN, EXP_CLOSE,
     OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_GT, OP_LT, OP_GE, OP_LE, OP_EQ,
-    SC_ABS, SC_BEGIN, SC_CAR, SC_MAP, SC_NOT, SC_NULLQ, SC_PRINT
+    SC_ABS, SC_BEGIN, SC_CAR, SC_DEFINE, SC_MAP, SC_NOT, SC_NULLQ, SC_PRINT, SC_PI
 }

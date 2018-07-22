@@ -1,15 +1,14 @@
 import sys
 
-from .schemoji import parse
+from . import schemoji
 
 def run(filename):
 
     with open(filename) as f:
         program = f.read()
-    print ('read in')
-    print(program.replace('\n', ''))
     
-    print(parse(program))
+    parsed = schemoji.parse(program)
+    print(schemoji.eval(parsed))
 
 
 if __name__ == '__main__':

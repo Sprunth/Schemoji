@@ -49,6 +49,7 @@ def standard_env() -> Env:
     "An environment with some Scheme standard procedures."
     env = Env()
     env.update(vars(math)) # sin, cos, sqrt, pi, ...
+    del env['pi']
     env.update({
         OP_ADD.m:op.add,
         OP_SUB.m:op.sub,
@@ -79,6 +80,7 @@ def standard_env() -> Env:
         SC_NULLQ.m:   lambda x: x == [], 
         'number?': lambda x: isinstance(x, Number),  
 		SC_PRINT.m:   print,
+        SC_PI.m:      math.pi,
         'procedure?': callable,
         'round':   round,
         'symbol?': lambda x: isinstance(x, Symbol),
@@ -86,3 +88,22 @@ def standard_env() -> Env:
     return env
 
 global_env = standard_env()
+
+
+def eval(x: Exp, env=global_env) -> Exp:
+    "Evaluate an expression in an environment."
+    if isinstance(x, Symbol):        # variable reference
+        return env[x]
+    elif isinstance(x, Number):  # constant number
+        return x                
+    elif x[0] == 'if':               # conditional
+        (_, test, conseq, alt) = x
+        exp = (conseq if eval(test, env) else alt)
+        return eval(exp, env)
+    elif x[0] == SC_DEFINE.m:           # definition
+        (_, symbol, exp) = x
+        env[symbol] = eval(exp, env)
+    else:                            # procedure call
+        proc = eval(x[0], env)
+        args = [eval(arg, env) for arg in x[1:]]
+        return proc(*args)
