@@ -65,39 +65,39 @@ def standard_env() -> Env:
     env.update(vars(math)) # sin, cos, sqrt, pi, ...
     del env['pi']
     env.update({
-        OP_ADD.m:op.add,
-        OP_SUB.m:op.sub,
-        OP_MUL.m:op.mul,
-        OP_DIV.m:op.truediv, 
-        OP_GT.m:op.gt,
-        OP_LT.m:op.lt,
-        OP_GE.m:op.ge,
-        OP_LE.m:op.le,
-        OP_EQ.m:op.eq, 
-        SC_ABS.m:     abs,
-        'append':  op.add,  
-        'apply':   lambda proc, args: proc(*args),
-        SC_BEGIN.m:   lambda *x: x[-1],
-        SC_CAR.m:     lambda x: x[0],
-        'cdr':     lambda x: x[1:], 
-        'cons':    lambda x,y: [x] + y,
-        'eq?':     op.is_, 
-        'expt':    pow,
-        'equal?':  op.eq, 
-        'length':  len, 
-        'list':    lambda *x: List(x), 
-        'list?':   lambda x: isinstance(x, List), 
-        SC_MAP.m:     map,
-        'max':     max,
-        'min':     min,
-        SC_NOT.m:     op.not_,
-        SC_NULLQ.m:   lambda x: x == [], 
-        'number?': lambda x: isinstance(x, Number),  
-		SC_PRINT.m:   print,
-        SC_PI.m:      math.pi,
-        'procedure?': callable,
-        'round':   round,
-        'symbol?': lambda x: isinstance(x, Symbol),
+        OP_ADD.m:       op.add,
+        OP_SUB.m:       op.sub,
+        OP_MUL.m:       op.mul,
+        OP_DIV.m:       op.truediv, 
+        OP_GT.m:        op.gt,
+        OP_LT.m:        op.lt,
+        OP_GE.m:        op.ge,
+        OP_LE.m:        op.le,
+        OP_EQ.m:        op.eq, 
+        SC_ABS.m:       abs,
+        'append':       op.add,  
+        'apply':        lambda proc, args: proc(*args),
+        SC_BEGIN.m:     lambda *x: x[-1],
+        SC_CAR.m:       lambda x: x[0],
+        'cdr':          lambda x: x[1:], 
+        'cons':         lambda x,y: [x] + y,
+        'eq?':          op.is_, 
+        'expt':         pow,
+        SC_EQUALQ.m:    op.eq, 
+        'length':       len, 
+        'list':         lambda *x: List(x), 
+        'list?':        lambda x: isinstance(x, List), 
+        SC_MAP.m:       map,
+        'max':          max,
+        'min':          min,
+        SC_NOT.m:       op.not_,
+        SC_NULLQ.m:     lambda x: x == [], 
+        'number?':      lambda x: isinstance(x, Number),  
+		SC_PRINT.m:     print,
+        SC_PI.m:        math.pi,
+        'procedure?':   callable,
+        'round':        round,
+        'symbol?':      lambda x: isinstance(x, Symbol),
     })
     return env
 
@@ -111,9 +111,9 @@ def eval(x, env=global_env):
     elif not isinstance(x, List):# constant 
         return x   
     op, *args = x       
-    if op == 'quote':            # quotation
+    if op == SC_QUOTE.m:            # quotation
         return args[0]
-    elif op == 'if':             # conditional
+    elif op == SC_IF.m:             # conditional
         (test, conseq, alt) = args
         exp = (conseq if eval(test, env) else alt)
         return eval(exp, env)
