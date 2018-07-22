@@ -15,3 +15,6 @@ For Scheme, these files are tested against Chicken Scheme.
 
 # language rules
 The rules are defined in src/mapping.py
+
+# python env
+using conda: `conda create --name schemoji --file env.txt`
