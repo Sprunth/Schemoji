@@ -7,8 +7,8 @@ class SchemojiMapping():
         self.n = n
 
 # Language tokens
-EXP_OPEN = SchemojiMapping('👉', '(')
-EXP_CLOSE = SchemojiMapping('👈', ')')
+EXP_OPEN = SchemojiMapping('🔴', '(')
+EXP_CLOSE = SchemojiMapping('🔵', ')')
 
 # Operators
 OP_ADD = SchemojiMapping('➕', '+')
@@ -17,8 +17,8 @@ OP_MUL = SchemojiMapping('✖️', '*')
 OP_DIV = SchemojiMapping('➗', '/')
 OP_GT  = SchemojiMapping('>', '>')
 OP_LT  = SchemojiMapping('<', '<')
-OP_GE  = SchemojiMapping('>=', '>=')
-OP_LE  = SchemojiMapping('<=', '<=')
+OP_GE  = SchemojiMapping('🌛', '>=')
+OP_LE  = SchemojiMapping('🌜', '<=')
 OP_EQ  = SchemojiMapping('⚖️', '=')
 
 # standard scheme procedures

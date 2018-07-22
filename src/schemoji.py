@@ -9,7 +9,7 @@ Number = (int, float)     # A Scheme Number is implemented as a Python int or fl
 Atom   = (Symbol, Number) # A Scheme Atom is a Symbol or Number
 List   = list             # A Scheme List is implemented as a Python list
 Exp    = (Atom, List)     # A Scheme expression is an Atom or List
-Env    = dict             # A Scheme environment (defined below) is a mapping of {variable: value}
+#Env    = dict             # A Scheme environment (defined below) is a mapping of {variable: value}
 
 def tokenize(chars: str) -> list:
     "Convert a string of characters into a list of tokens"
@@ -43,7 +43,21 @@ def atom(token: str) -> Atom:
         except ValueError:
             return Symbol(token)
 
+class Env(dict):
+    "An environment: a dict of {'var': val} pairs, with an outer Env."
+    def __init__(self, params=(), args=(), outer=None):
+        self.update(zip(params, args))
+        self.outer = outer
+    def find(self, var):
+        "Find the innermost Env where var appears"
+        return self if (var in self) else self.outer.find(var)
 
+class Procedure(object):
+    "A user-defined Schemoji procedure"
+    def __init__(self, params, body, env):
+        self.params, self.body, self.env = params, body, env
+    def __call__(self, *args):
+        return eval(self.body, Env(self.params, args, self.env))
 
 def standard_env() -> Env:
     "An environment with some Scheme standard procedures."
@@ -90,20 +104,29 @@ def standard_env() -> Env:
 global_env = standard_env()
 
 
-def eval(x: Exp, env=global_env) -> Exp:
+def eval(x, env=global_env):
     "Evaluate an expression in an environment."
-    if isinstance(x, Symbol):        # variable reference
-        return env[x]
-    elif isinstance(x, Number):  # constant number
-        return x                
-    elif x[0] == 'if':               # conditional
-        (_, test, conseq, alt) = x
+    if isinstance(x, Symbol):    # variable reference
+        return env.find(x)[x]
+    elif not isinstance(x, List):# constant 
+        return x   
+    op, *args = x       
+    if op == 'quote':            # quotation
+        return args[0]
+    elif op == 'if':             # conditional
+        (test, conseq, alt) = args
         exp = (conseq if eval(test, env) else alt)
         return eval(exp, env)
-    elif x[0] == SC_DEFINE.m:           # definition
-        (_, symbol, exp) = x
+    elif op == SC_DEFINE.m:         # definition
+        (symbol, exp) = args
         env[symbol] = eval(exp, env)
-    else:                            # procedure call
-        proc = eval(x[0], env)
-        args = [eval(arg, env) for arg in x[1:]]
-        return proc(*args)
+    elif op == 'set!':           # assignment
+        (symbol, exp) = args
+        env.find(symbol)[symbol] = eval(exp, env)
+    elif op == 'lambda':         # procedure
+        (parms, body) = args
+        return Procedure(parms, body, env)
+    else:                        # procedure call
+        proc = eval(op, env)
+        vals = [eval(arg, env) for arg in args]
+        return proc(*vals)
