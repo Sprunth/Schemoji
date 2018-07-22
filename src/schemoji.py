@@ -123,7 +123,7 @@ def eval(x, env=global_env):
     elif op == 'set!':           # assignment
         (symbol, exp) = args
         env.find(symbol)[symbol] = eval(exp, env)
-    elif op == 'lambda':         # procedure
+    elif op == SC_LAMBDA.m:         # procedure
         (parms, body) = args
         return Procedure(parms, body, env)
     else:                        # procedure call
