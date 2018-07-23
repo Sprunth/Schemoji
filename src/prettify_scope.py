@@ -7,6 +7,7 @@ import sys
 from .mapping import *
 
 def prettify_scope(filename):
+    print('prettifying %s' % filename)
     
     lines = [line.rstrip('\n') for line in open(filename)]
     open(filename, 'w').close()  # clear file

@@ -1,8 +1,10 @@
+import argparse
 import os
 import sys
 from functools import partial
 
 from .mapping import *
+from .prettify_scope import prettify_scope
 
 def convert(filename):
 
@@ -44,10 +46,15 @@ def convert(filename):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print('need one arg: filename')
-        sys.exit(1)
 
-    filename = sys.argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filename')
+    parser.add_argument('--prettify', action='store_true', default=False)
+    args = parser.parse_args()
 
-    convert(filename)
+    convert(args.filename)
+    if args.prettify:
+        to_schemoji = args.filename.endswith('.scm')
+        ext = '.smoji' if to_schemoji else '.scm'
+        outfilename = os.path.splitext(args.filename)[0] + ext
+        prettify_scope(outfilename)
