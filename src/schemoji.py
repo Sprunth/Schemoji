@@ -13,7 +13,12 @@ Exp    = (Atom, List)     # A Scheme expression is an Atom or List
 
 def tokenize(chars: str) -> list:
     "Convert a string of characters into a list of tokens"
-    return chars.replace(EXP_OPEN.m, ' %s ' % EXP_OPEN.m).replace(EXP_CLOSE.m, ' %s ' % EXP_CLOSE.m).split()
+    for k in EXP_OPENCLOSE_ALT.values():
+        chars = chars.replace('%s%s' % (EXP_CLOSE_ALT_IDENTIFIER, k), ' %s ' % EXP_CLOSE.m)
+    for k in EXP_OPENCLOSE_ALT.values():
+        chars = chars.replace(k, ' %s ' % EXP_OPEN.m)
+    chars = chars.replace(EXP_OPEN.m, ' %s ' % EXP_OPEN.m).replace(EXP_CLOSE.m, ' %s ' % EXP_CLOSE.m).split()
+    return chars
 
 def parse(program: str) -> Exp:
     "Read a Schemoji expression from a string."
