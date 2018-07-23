@@ -1,4 +1,4 @@
 (begin 
     (define r 10)
-    (* pi (* r r))
+    (print (* pi (* r r)))
 )

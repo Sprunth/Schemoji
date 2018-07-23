@@ -1,13 +1,13 @@
 (begin
-  (define mergelists
+  (define mergel
     (lambda (l1 l2)
       (if (null? l1)
           l2
           (if (null? l2)
               l1
               (if (< (car l1) (car l2))
-                  (cons (car l1) (mergelists (cdr l1) l2))
-                  (cons (car l2) (mergelists (cdr l2) l1)))))))
+                  (cons (car l1) (mergel (cdr l1) l2))
+                  (cons (car l2) (mergel (cdr l2) l1)))))))
   (define evennumbers
     (lambda (l)
       (if (null? l)
@@ -28,7 +28,7 @@
           l
           (if (null? (cdr l))
               l
-              (mergelists
+              (mergel
                 (mergesort (oddnumbers l))
                 (mergesort (evennumbers l)))))))
 
