@@ -24,8 +24,18 @@ def convert(filename):
     to_write = []
     for line in lines:
         # do the replacement
+        # for schemoji -> Scheme, we need to support the dialer tones too
+        if not to_schemoji:
+            # first replace the EXP_CLOSE, since we need to check for the ALT dual-char
+            for c in EXP_OPENCLOSE_ALT.values():
+                line = line.replace('%s%s' % (EXP_CLOSE_ALT_IDENTIFIER, c), EXP_CLOSE.n)
+            # then the EXP_OPEN
+            for c in EXP_OPENCLOSE_ALT.values():
+                line = line.replace(c, EXP_OPEN.n)
+        # note, need to do multi-character replacements before single ones
+        # e.g. do '>=' first, then '='
         for k,v in cm.items():
-            line = line.replace(k, v)
+            line = line.replace(k, v)        
         to_write.append(line)
 
     with open(outfilename, 'w') as outfile:

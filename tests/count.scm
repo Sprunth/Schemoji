@@ -1,8 +1,8 @@
 (begin
-    (define count (lambda (item L)
+    (define count (lambda (search L)
         (if (not (null? L)) 
-            (+ (if (equal? item (car L)) 1 0) (count item (cdr L)))
+            (+ (if (equal? search (car L)) 1 0) (count search (cdr L)))
             0
         )))
-    (count (quote the) (quote (the more the merrier the bigger the better)))
+    (print (count (quote the) (quote (the more the merrier the bigger the better))))
 )

@@ -22,6 +22,7 @@ EXP_OPENCLOSE_ALT = {
     9: '9️⃣',
     10: '🔟',
 }
+EXP_CLOSE_ALT_IDENTIFIER = '\u2009'  # to identify between open and close for ALT
 
 # Operators
 OP_ADD = SchemojiMapping('➕', '+')

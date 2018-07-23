@@ -24,7 +24,7 @@ def prettify_scope(filename):
             elif c == EXP_CLOSE.m:
                 scope_depth -= 1
                 ch = EXP_OPENCLOSE_ALT[min(scope_depth, 10)]
-                l.append(ch)                
+                l.extend(['\u2009', ch])
             else:
                 l.append(c)
         to_write.append(''.join(l))

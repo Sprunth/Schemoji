@@ -8,7 +8,7 @@ def run(filename):
         program = f.read()
     
     parsed = schemoji.parse(program)
-    print(schemoji.eval(parsed))
+    schemoji.eval(parsed)
 
 
 if __name__ == '__main__':
