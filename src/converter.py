@@ -11,11 +11,11 @@ def convert(filename):
     to_schemoji = filename.endswith('.scm')
 
     # conversion map
-    cm = {}
+    cm = []
     key_name = 'n' if to_schemoji else 'm'
     val_name = 'm' if to_schemoji else 'n'
     for token in master_token_set:
-        cm[getattr(token, key_name)] = getattr(token, val_name)
+        cm.append( (getattr(token, key_name), getattr(token, val_name)) )
 
     ext = '.smoji' if to_schemoji else '.scm'
     outfilename = os.path.splitext(filename)[0] + ext
@@ -36,8 +36,9 @@ def convert(filename):
                 line = line.replace(c, EXP_OPEN.n)
         # note, need to do multi-character replacements before single ones
         # e.g. do '>=' first, then '='
-        for k,v in cm.items():
-            line = line.replace(k, v)        
+        for item in cm:
+            k,v = item
+            line = line.replace(k, v)
         to_write.append(line)
 
     with open(outfilename, 'w') as outfile:
