@@ -7,12 +7,12 @@ Check out the tests folder for Scheme (.scm) and Schemoji (.smoji) equivelent fi
 
 Simple factorial code:
 ```Scheme
-
-```
 (begin
     (define fact (lambda (n) (if (<= n 1) 1 (* n (fact (- n 1))))))
     (print (fact 10))
 )
+```
+
 ```
 🔸👌
     🔸✏️ fact 🔸🐏 🔸n🔹 🔸☯️ 🔸🌜 n 1🔹 1 🔸🇽 n 🔸fact 🔸➖ n 1🔹🔹🔹🔹🔹🔹
